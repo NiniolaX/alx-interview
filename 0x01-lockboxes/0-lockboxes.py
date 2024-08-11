@@ -12,13 +12,18 @@ def canUnlockAll(boxes):
     Return:
         (bool): True if all boxes can be opened, otherwise, False
     """
+    if not isinstance(boxes, list):
+        return False
+    if not all(isinstance(box, list) for box in boxes):
+        return False
+
     # DEPTH-FIRST SEARCH
     visited = set()
     to_visit = [0]  # Stack: visit first box first since its unlocked
 
     while to_visit:
         current_index = to_visit.pop()
-        if current_index in visited:
+        if current_index in visited or current_index > len(boxes):
             continue
         visited.add(current_index)
         to_visit.extend(boxes[current_index])  # Add keys in this box to stack
