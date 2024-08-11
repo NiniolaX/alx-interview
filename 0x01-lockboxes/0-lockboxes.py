@@ -20,11 +20,15 @@ def canUnlockAll(boxes):
     # DEPTH-FIRST SEARCH
     visited = set()
     to_visit = [0]  # Stack: visit first box first since its unlocked
+    n = len(boxes)
 
     while to_visit:
         current_index = to_visit.pop()
-        if current_index in visited or current_index > len(boxes):
+
+        # Only visit unvisited boxes and boxes at valid index
+        if current_index in visited or current_index >= n:
             continue
+
         visited.add(current_index)
         to_visit.extend(boxes[current_index])  # Add keys in this box to stack
 
