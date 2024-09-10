@@ -10,6 +10,7 @@ Functions:
     file having nH characters.
 """
 
+
 def minOperations(n: int) -> int:
     """Computes the minimum number of operations to result in a file
     having nH characters
@@ -18,8 +19,8 @@ def minOperations(n: int) -> int:
         # No operations needed since file already has 1H characters
         return 0
 
-    operations: int = 0
-    divisor: int = 2
+    operations = 0
+    divisor = 2
 
     # Using prime factorization technique
     while n != 1:
