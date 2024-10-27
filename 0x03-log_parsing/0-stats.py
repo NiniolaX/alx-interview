@@ -37,49 +37,46 @@ def print_stats() -> None:
             print(f"{status_code}: {stats[status_code]}")
 
 
-# Signal handler for keyboard interruption (Ctrl + C)
-def interrupt_handler(signum, frame):
-    """ Handle the SIGINT signal """
-    print_stats()
-    sys.exit(0)
-
-
 def broken_pipe_handler(signum, frame):
     """ Handle broken pipe signal silently."""
     print_stats()
     sys.exit(0)
 
 
-# Register the signal handlers
-signal.signal(signal.SIGINT, interrupt_handler)
+# Register the signal handler
 signal.signal(signal.SIGPIPE, broken_pipe_handler)
 
 
 # Read lines from standard input
-for line in sys.stdin:
-    pattern = r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.*?)\] \"GET /projects/260 HTTP/1.1\" (\d+) (\d+)"
+try:
+    for line in sys.stdin:
+        pattern = r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.*?)\] \"GET /projects/260 HTTP/1.1\" (\d+) (\d+)"
 
-    # Update metrics if input data matches required format
-    try:
-        match = re.match(pattern, line)
-        if match:
-            ip_address, timestamp, status_code, file_size = match.groups()
-            total_file_size += int(file_size)
+        # Update metrics if input data matches required format
+        try:
+            match = re.match(pattern, line)
+            if match:
+                ip_address, timestamp, status_code, file_size = match.groups()
+                total_file_size += int(file_size)
 
-            # Update status code count if status code is recognized
-            status_code = int(status_code)
-            if status_code in stats:
-                stats[status_code] += 1
+                # Update status code count if status code is recognized
+                status_code = int(status_code)
+                if status_code in stats:
+                    stats[status_code] += 1
 
-            line_count += 1
+                    line_count += 1
 
-    except (ValueError, ImportError):
-        continue  # Skip lines with incorrect file size or status code format
+        except (ValueError, ImportError):
+            continue  # Skip lines with incorrect file size or status code format
 
-    # Display stats after every 10 lines read
-    if line_count % 10 == 0:
-        print_stats()
+        # Display stats after every 10 lines read
+        if line_count % 10 == 0:
+            print_stats()
 
+except KeyboardInterrupt:
+    print_stats()
+    raise
+    
 
 # Print accumulated metrics after loop ends
 print_stats()
