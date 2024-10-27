@@ -27,7 +27,7 @@ line_count = 0
 
 
 # Function to print accumulated metrics
-def print_stats(stats: dict) -> None:
+def print_stats() -> None:
     """Prints the accumulated metrics
     Args:
         stats(dict): Accumulated metrics.
@@ -46,7 +46,8 @@ def print_stats(stats: dict) -> None:
 # Signal handler for keyboard interruption (Ctrl + C)
 def interrupt_handler(signum, frame):
     """ Handles the SIGINT signal """
-    print_stats(stats)
+    print_stats()
+    sys.exit(0)
 
 
 # Register the signal handler
@@ -64,7 +65,7 @@ for line in sys.stdin:
             ip_address, timestamp, status_code, file_size = match.groups()
             total_file_size += int(file_size)
 
-            # Update metrics if status code is recognized
+            # Update status code count if status code is recognized
             status_code = int(status_code)
             if status_code in stats:
                 stats[status_code] += 1
@@ -76,7 +77,11 @@ for line in sys.stdin:
 
     # Display stats after every 10 lines read
     if line_count % 10 == 0:
-        print_stats(stats)
+        print_stats()
+
+
+# Print accumulated metrics after loop ends
+print_stats()
 
 # Strict regex pattern for input validation
 # FORMAT: <IP Address> - [<date>] "GET /projects/260 HTTP/1.1" <status code> <file size>
