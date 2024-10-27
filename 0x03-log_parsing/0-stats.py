@@ -14,14 +14,8 @@ import sys
 # Initialize counters and data storage
 total_file_size = 0
 stats = {
-    200: 0,
-    301: 0,
-    400: 0,
-    401: 0,
-    403: 0,
-    404: 0,
-    405: 0,
-    500: 0
+    200: 0, 301: 0, 400: 0, 401: 0,
+    403: 0, 404: 0, 405: 0, 500: 0
 }
 line_count = 0
 
@@ -45,13 +39,20 @@ def print_stats() -> None:
 
 # Signal handler for keyboard interruption (Ctrl + C)
 def interrupt_handler(signum, frame):
-    """ Handles the SIGINT signal """
+    """ Handle the SIGINT signal """
     print_stats()
     sys.exit(0)
 
 
-# Register the signal handler
+def broken_pipe_handler(signum, frame):
+    """ Handle broken pipe signal silently."""
+    print_stats()
+    sys.exit(0)
+
+
+# Register the signal handlers
 signal.signal(signal.SIGINT, interrupt_handler)
+signal.signal(signal.SIGPIPE, broken_pipe_handler)
 
 
 # Read lines from standard input
@@ -73,7 +74,7 @@ for line in sys.stdin:
             line_count += 1
 
     except (ValueError, ImportError):
-        pass  # Skip lines with incorrect file size or status code format
+        continue  # Skip lines with incorrect file size or status code format
 
     # Display stats after every 10 lines read
     if line_count % 10 == 0:
