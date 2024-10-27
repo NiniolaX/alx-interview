@@ -37,6 +37,7 @@ def print_stats() -> None:
             print(f"{status_code}: {stats[status_code]}")
 
 
+# Handle broken pipe signal
 def broken_pipe_handler(signum, frame):
     """ Handle broken pipe signal silently."""
     print_stats()
