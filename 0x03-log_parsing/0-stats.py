@@ -51,7 +51,7 @@ signal.signal(signal.SIGPIPE, broken_pipe_handler)
 # Read lines from standard input
 try:
     for line in sys.stdin:
-        pattern = r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.*?)\] \"GET /projects/260 HTTP/1.1\" (\d+) (\d+)"
+        pattern = r"^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.*?)\] \"GET /projects/260 HTTP/1.1\" (\d+) (\d+)$"
 
         # Update metrics if input data matches required format
         try:
@@ -68,7 +68,7 @@ try:
                     line_count += 1
 
         except (ValueError, ImportError):
-            continue  # Skip lines with incorrect file size or status code format
+            continue  # Skip lines with incorrect file size or status code FMT
 
         # Display stats after every 10 lines read
         if line_count % 10 == 0:
@@ -77,18 +77,7 @@ try:
 except KeyboardInterrupt:
     print_stats()
     raise
-    
+
 
 # Print accumulated metrics after loop ends
 print_stats()
-
-# Strict regex pattern for input validation
-# FORMAT: <IP Address> - [<date>] "GET /projects/260 HTTP/1.1" <status code> <file size>
-
-# IP = r"(25[0-5]|2[0-4]\d|1\d{2}|[0-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[0-9]?\d"
-# DATE = r"[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])"
-# TIME = r"(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])\.\d{6}"
-# STATUS = r"200|301|400|401|403|404|405|500"
-# SIZE = r"\d{1,}"
-
-# regex = rf'^({IP}) \- (\[{DATE} {TIME}\]) ("GET /projects/260 HTTP/1.1") ({STATUS}) ({SIZE})$'
