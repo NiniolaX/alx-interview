@@ -19,21 +19,23 @@ def validUTF8(data: List[int]) -> bool:
     num_of_bytes = 0  # Set to 0 to indicate start of a new character
 
     for char in data:
-        # Extract the least significant bytes of the character
+        # Extract the least significant bits of character
         lsb = char & 0xFF
 
+        # Validate pattern of MSB
         if num_of_bytes == 0:
             if (lsb >> 5) == 0b110:
-                num_of_bytes = 1  # Bytes left to check for 2-byte integer
+                num_of_bytes = 1  # For 2-byte integer
             elif (lsb >> 4) == 0b1110:
-                num_of_bytes = 2  # Bytes left to check for 3-byte integer
+                num_of_bytes = 2  # For 3-byte integer
             elif (lsb >> 3) == 0b11110:
-                num_of_bytes = 3  # Bytes left to check for 4-byte integer
+                num_of_bytes = 3  # For 4-byte integer
             elif (lsb >> 7) == 0b0:
-                continue  # No bytes left to check for 1-byte integer
+                continue  # For 1-byte integer
             else:
                 return False
 
+        # Validate continuation bytes (Should be 10000000, otherwise invalid)
         else:
             if (lsb >> 6) != 0b10:
                 return False
