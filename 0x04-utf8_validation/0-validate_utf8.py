@@ -29,8 +29,9 @@ def validUTF8(data: List[int]) -> bool:
                 num_of_bytes = 2  # Bytes left to check for 3-byte integer
             elif (lsb >> 3) == 0b11110:
                 num_of_bytes = 3  # Bytes left to check for 4-byte integer
-            elif (lsb >> 7):
-                # MSB for 1-byte characters should be 0 not 1
+            elif (lsb >> 7) == 0b0:
+                continue  # No bytes left to check for 1-byte integer
+            else:
                 return False
 
         else:
@@ -38,4 +39,4 @@ def validUTF8(data: List[int]) -> bool:
                 return False
             num_of_bytes -= 1
 
-        return num_of_bytes == 0  # True if all bytes were correctly processed
+    return num_of_bytes == 0  # True if all bytes were correctly processed
