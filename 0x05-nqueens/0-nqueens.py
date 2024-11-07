@@ -22,7 +22,7 @@ Functions:
 import sys
 
 
-def is_safe_position(queens: list[list[int]], row: int, col: int) -> bool:
+def is_safe_position(queens, row, col):
     """ Checks if a postion is safe to place a queen """
     for r, c in queens:
         # Checks that no queen exists on that row or column or diagonal
@@ -31,11 +31,11 @@ def is_safe_position(queens: list[list[int]], row: int, col: int) -> bool:
     return True
 
 
-def solve_nqueens(n: int) -> list[list[list[int]]]:
+def solve_nqueens(n):
     """ Returns all possible solutions to the N-Queens problem """
     solutions = []
 
-    def backtrack(queens: list[list[int]], row: int) -> None:
+    def backtrack(queens, row):
         """
         Removes last placed queen from her previous position on board to
         to next safe position.
