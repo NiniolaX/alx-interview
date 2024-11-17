@@ -15,23 +15,8 @@ if (!Number.isInteger(movieID)) {
   process.exit(1);
 }
 
-// Function to fetch all characters in a film from API
-const fetchCharactersURLs = async (url) => {
-  return new Promise((resolve, reject) => {
-    request(url, (error, response, body) => {
-      if (error) {
-        reject(error);
-      } else if (response.statusCode === 200) {
-        resolve(JSON.parse(body).characters);
-      } else {
-        reject(Error(response.statusCode));
-      }
-    });
-  });
-};
-
-// Function to fetch character data from its URL
-const fetchCharacter = (url) => {
+// Function to fetch data from API
+const fetchData = (url) => {
   return new Promise((resolve, reject) => {
     request(url, (error, response, body) => {
       if (error) {
@@ -49,14 +34,14 @@ const fetchCharacter = (url) => {
 // Main function
 const main = async () => {
   try {
-    const filmURL = `https://swapi-api.alx-tools.com/api/films/${movieID}`;
-    const charactersURLS = await fetchCharactersURLs(filmURL);
+    const movie = await fetchData(`https://swapi-api.alx-tools.com/api/films/${movieID}`);
+    const characterURLs = movie.characters;
 
     // Fetch data from URLs concurrently
-    const results = await Promise.all(charactersURLS.map(fetchCharacter));
+    const characters = await Promise.all(characterURLs.map(fetchData));
 
     // Print data from results
-    results.forEach((data) => console.log(data.name));
+    characters.forEach((data) => console.log(data.name));
   } catch (error) {
     console.log(error);
   }
