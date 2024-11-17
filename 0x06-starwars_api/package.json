@@ -1,0 +1,15 @@
+{
+    "dependencies": {
+        "request": "^2.88.2"
+    },
+    "name": "0x06-starwars_api",
+    "version": "1.0.0",
+    "description": "This repository contains a script which fetches data from an [external API]('https://swapi-api.alx-tools.com/) asynchronously.",
+    "main": "0-starwars_characters.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}
