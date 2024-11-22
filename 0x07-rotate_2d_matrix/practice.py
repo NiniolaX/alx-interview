@@ -1,36 +1,62 @@
 #!/usr/bin/python3
+# matrix = [[1, 2, 3],
+#           [4, 5, 6],
+#           [7, 8, 9]]
+
+# m = len(matrix) # no of rows
+# n = len(matrix[0]) # no of columns
+
+# print("The matrix")
+# print(matrix)
+# print()
+
+# print(f"First row: {matrix[0]}")
+# print(f"First column: {[matrix[i][0] for i in range(m)]}")
+# print()
+
+# print("Rows in matrix:")
+# for row in matrix:
+#     print(row)
+# print()
+
+# print("Columns in matrix:")
+# for i in range(n):
+#     print([matrix[j][i] for j in range(m)])
+# print()
+
+# Transposition in single line
+# matrix = [[matrix[j][i] for j in range(m)] for i in range(n)]
+# print(f"Transposed matrix: {matrix}")
+# print()
+
+# for row in matrix:
+#     row = row.reverse()
+# print(f"Reversed matrix: {matrix}")
+
+
 matrix = [[1, 2, 3],
           [4, 5, 6],
           [7, 8, 9]]
 
-# Reverse matrix
-# for row in matrix:
-#     row.reverse()
+n = len(matrix)
 
-m = len(matrix) # no of rows
-n = len(matrix[0]) # no of columns
+# In place transposition
+for i in range(n): # col
+    for j in range(i + 1, n): # row
+        print(f"matrix - [{j}][{i}]: {matrix[j][i]}, [{i}][{j}]: {matrix[i][j]}")
+        matrix[j][i], matrix[i][j] = matrix[i][j], matrix[j][i]
 
-print("The matrix")
 print(matrix)
-print()
+# row 0
+# row item = 1
+# col item = 1
+# Swap items
+# row 0
+# row item = 2
+# col item = 4
 
-print(f"First row: {matrix[0]}")
-print(f"First column: {[matrix[i][0] for i in range(len(matrix))]}")
-print()
-
-print("Rows in matrix:")
-for row in matrix:
-    print(row)
-print()
-
-print("Columns in matrix:")
-for i in range(len(matrix)):
-    print([matrix[j][i] for j in range(len(matrix))])
-print()
-
-matrix = [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix))]
-print(f"Transposed matrix: {matrix}")
-
+# row 1
+# 
 
 # By transposing:
 #   row1 => col1 and col1 => row1
