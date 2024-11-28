@@ -24,8 +24,11 @@ def makeChange(coins: List[int], total: int) -> int:
     Raises:
         None
     """
-    if not coins or not total:
+    if not coins or total is None:
         return -1
+
+    if total <= 0:
+        return 0
 
     # Initialize array of minimums for all values leading up to total
     minimums = [total + 1] * (total + 1)  # Initialize with arbitrary value
