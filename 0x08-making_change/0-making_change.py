@@ -24,23 +24,24 @@ def makeChange(coins: List[int], total: int) -> int:
     Raises:
         None
     """
-    # Sort coins in descending order
-    coins.sort(reverse=True)
-
     # Initialize array of minimums for all values leading up to total
-    minimums = [total + 1] * (total + 1)
+    minimums = [total + 1] * (total + 1)  # Initialize with arbitrary value
 
     # Base case
     minimums[0] = 0
 
-    # Iterate over all totals
+    # Iterate over array of minimums to find actual minimum for each index
     for i in range(1, total + 1):
-        # Loop through each given coin
+        # Check each coin in pile of coins
         for coin in coins:
             rem = i - coin
             if rem < 0:
                 continue
-            curr_min = 1 + minimums[rem]
+
+            # Use result from previous calcs to avoid redundant calcs
+            curr_min = 1 + minimums[rem]  # 1 represents recently used coin
+
+            # Update minimums with newly found least minimum
             if curr_min < minimums[i]:
                 minimums[i] = curr_min
 
