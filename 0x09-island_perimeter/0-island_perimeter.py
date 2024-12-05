@@ -8,7 +8,7 @@ Functions:
 """
 
 
-def calculate_longest_land_strip(array: list[int]) -> int:
+def calculate_longest_land_strip(array) -> int:
     """ Calculates the longest land strip in a row/column
 
     Args:
@@ -33,7 +33,7 @@ def calculate_longest_land_strip(array: list[int]) -> int:
     return cell_counter
 
 
-def island_perimeter(grid: list[list[int]]) -> int:
+def island_perimeter(grid) -> int:
     """ Calculates the perimeter of an island represeted on a grid of integers
 
     Args:
