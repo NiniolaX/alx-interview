@@ -8,31 +8,6 @@ Functions:
 """
 
 
-def calculate_longest_land_strip(array) -> int:
-    """ Calculates the longest land strip in a row/column
-
-    Args:
-        array (list of integers): Row/column
-
-    Returns:
-        (int): Length of longest land strip
-
-    Raises:
-        None
-    """
-    cell_counter = 0
-
-    # Iterate through row to find longest land strip
-    for cell in array:
-        if cell == 0 and cell_counter == 0:
-            next  # No land cell has been hit
-        if cell == 0 and cell_counter != 0:
-            break  # Water cell is hit after a land cell/strip
-        cell_counter += cell  # Land cell is hit or land script continues
-
-    return cell_counter
-
-
 def island_perimeter(grid) -> int:
     """ Calculates the perimeter of an island represeted on a grid of integers
 
@@ -48,26 +23,30 @@ def island_perimeter(grid) -> int:
     if not grid:
         return 0
 
-    len_of_cols = len(grid[0])
-    columns = [[row[j] for row in grid] for j in range(len_of_cols)]
+    len_rows = len(grid)
+    len_cols = len(grid[0])
 
-    island_width = 0
-    island_length = 0
+    perimeter = 0
 
-    # Calculate island width
-    for row in grid:
-        widest_land_space = calculate_longest_land_strip(row)
+    for i in range(len_rows):
+        for j in range(len_cols):
+            if grid[i][j] == 1:  # Land cell
+                perimeter += 4  # Start with 4 sides
 
-        # Update island_width variable with longest row
-        if island_width < widest_land_space:
-            island_width = widest_land_space
+                # Check cell to the left
+                if j > 0 and grid[i][j - 1] == 1:
+                    perimeter -= 1  # Subtract 1 for shared edge
 
-    # Calculate island length
-    for col in columns:
-        longest_land_space = calculate_longest_land_strip(col)
+                # Check cell to the right
+                if j < len_cols - 1 and grid[i][j + 1] == 1:
+                    perimeter -= 1  # Subtract 1 for shared edge
 
-        if island_length < longest_land_space:
-            island_length = longest_land_space
+                # Check cell above
+                if i > 0 and grid[i - 1][j] == 1:
+                    perimeter -= 1  # Subtract 1 for shared edge
 
-    perimeter = 2 * (island_length + island_width)
+                # Check cell below
+                if i < len_rows - 1 and grid[i + 1][j] == 1:
+                    perimeter -= 1  # Subtract 1 for shared edge
+
     return perimeter
